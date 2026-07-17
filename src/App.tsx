@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  Sparkles, Mail, Lock, Loader2, ArrowLeft, ArrowRight, Eye, ChevronRight, ShieldAlert, KeyRound
+  Sparkles, Mail, Lock, Loader2, ArrowLeft, ArrowRight, Eye, ChevronRight, ShieldAlert
 } from 'lucide-react';
 import { toast, Toaster } from 'react-hot-toast';
 import { motion } from 'motion/react';
@@ -187,16 +187,6 @@ export default function App() {
         {/* Progress Bar top */}
         <div className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-blue-400 to-accent z-[100] origin-left" />
 
-        {/* Floating Quick Action CMS shortcut */}
-        <div className="fixed bottom-6 left-6 z-40">
-          <button 
-            onClick={() => navigateTo('admin')}
-            className="flex items-center gap-1.5 px-4 py-2.5 rounded-full bg-slate-900/90 dark:bg-white/90 text-white dark:text-slate-900 hover:bg-primary dark:hover:bg-accent text-xs font-bold shadow-xl transition-all hover:scale-105 cursor-pointer backdrop-blur-md border border-slate-200/20"
-          >
-            <KeyRound size={12} />
-            <span>CMS Admin</span>
-          </button>
-        </div>
 
         {/* Global sticky navbar */}
         <Navbar 

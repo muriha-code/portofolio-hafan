@@ -13,10 +13,9 @@ export const Hero: React.FC<HeroProps> = ({ profile }) => {
   const [isDeleting, setIsDeleting] = useState(false);
   
   const roles = [
-    "Information Science Student",
+    "Computer Science Student",
     "Web Developer",
-    "Graphic Designer",
-    "UI/UX Designer"
+    "Graphic Designer"
   ];
 
   const typingSpeed = isDeleting ? 40 : 80;
@@ -196,8 +195,8 @@ export const Hero: React.FC<HeroProps> = ({ profile }) => {
               {/* Glass footer tag */}
               <div className="absolute bottom-4 left-4 right-4 glass px-4 py-2.5 rounded-xl border border-white/20 flex justify-between items-center">
                 <div>
-                  <h4 className="text-xs font-bold text-slate-900 dark:text-white">Rifky Hafan</h4>
-                  <p className="text-[10px] text-slate-500 dark:text-slate-400">Bandung, Indonesia</p>
+                  <h4 className="text-xs font-bold text-slate-900 dark:text-white">Hafan</h4>
+                  <p className="text-[10px] text-slate-500 dark:text-slate-400">Sukoharjo, Indonesia</p>
                 </div>
                 <div className="flex gap-1">
                   <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />

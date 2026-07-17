@@ -1,5 +1,5 @@
 import React from 'react';
-import { Download, GraduationCap, Compass, Target, Info } from 'lucide-react';
+import { GraduationCap, Compass, Target, Info } from 'lucide-react';
 import { motion } from 'motion/react';
 import { Profile } from '../types';
 
@@ -34,7 +34,8 @@ export const About: React.FC<AboutProps> = ({ profile }) => {
               <img
                 src={profile.avatarUrl || '/profile.png'}
                 alt="Rifky Hafan"
-                className="w-full h-full object-cover rounded-xl"
+                className="w-full h-full object-cover rounded-xl transition-opacity duration-300 hover:opacity-95"
+                onDoubleClick={() => { window.location.hash = '#/admin'; }}
                 onError={(e) => {
                   e.currentTarget.src = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=800";
                 }}
@@ -56,10 +57,6 @@ export const About: React.FC<AboutProps> = ({ profile }) => {
                   <span className="font-medium text-slate-500">Pendidikan</span>
                   <span>{profile.education.split(' - ')[0]}</span>
                 </li>
-                <li className="flex justify-between py-1 border-b border-slate-200/40 dark:border-slate-800/40">
-                  <span className="font-medium text-slate-500">Domisili</span>
-                  <span>Bandung, ID</span>
-                </li>
                 <li className="flex justify-between py-1">
                   <span className="font-medium text-slate-500">Karier</span>
                   <span>Web Dev & Graphic Designer</span>
@@ -72,10 +69,10 @@ export const About: React.FC<AboutProps> = ({ profile }) => {
           <div className="lg:col-span-7 flex flex-col gap-8 text-left">
             <div>
               <h3 className="text-xl font-display font-bold text-slate-900 dark:text-white mb-4">
-                Membangun Integrasi yang Sempurna antara Kode & Desain
+                Membangun Solusi Digital Melalui Web Development & Graphic Design
               </h3>
               <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed mb-4">
-                {profile.bio || "Saya adalah mahasiswa Sains Informasi yang berfokus pada web development dan visual arts. Melalui pemahaman mendalam tentang manajemen data informasi, arsitektur informasi, serta estetika visual, saya mampu membangun aplikasi web yang cepat, aman, dan memanjakan mata."}
+                Halo! Saya Muhamad Rifky Hafan, mahasiswa S1 Teknik Informatika yang memiliki minat besar pada bidang Web Development dan Graphic Design. Saya senang mengembangkan website yang modern, responsif, dan mudah digunakan, serta menciptakan desain visual yang menarik untuk berbagai kebutuhan digital. Saya terus mengembangkan kemampuan dalam pemrograman web dan desain grafis melalui berbagai proyek, sehingga mampu menghasilkan solusi digital yang fungsional, kreatif, dan memberikan pengalaman pengguna yang lebih baik.
               </p>
             </div>
 
@@ -114,18 +111,6 @@ export const About: React.FC<AboutProps> = ({ profile }) => {
               </div>
             </div>
 
-            <div className="pt-4 flex items-center gap-4">
-              <a
-                href={profile.resumeUrl && profile.resumeUrl !== '#' ? profile.resumeUrl : undefined}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={profile.resumeUrl && profile.resumeUrl !== '#' ? undefined : (e) => { e.preventDefault(); alert("Silahkan tambahkan CV PDF melalui dashboard admin!"); }}
-                className="px-6 py-3 rounded-full text-xs font-semibold bg-primary hover:bg-primary/95 text-white flex items-center gap-2 shadow-lg shadow-primary/15 transition-all duration-300 cursor-pointer"
-              >
-                Download CV Lengkap
-                <Download size={14} />
-              </a>
-            </div>
           </div>
         </div>
       </div>

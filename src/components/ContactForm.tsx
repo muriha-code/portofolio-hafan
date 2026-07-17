@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { toast, Toaster } from 'react-hot-toast';
-import { Mail, Phone, MapPin, Send, Linkedin, Github, Instagram, ArrowRight, Loader2 } from 'lucide-react';
+import { Mail, Phone, Send, Linkedin, Github, Instagram, ArrowRight, Loader2 } from 'lucide-react';
 import { dbService } from '../services/db';
 import { Settings } from '../types';
 
@@ -86,10 +86,10 @@ export const ContactForm: React.FC<ContactFormProps> = ({ settings }) => {
                 <div>
                   <h4 className="text-xs font-bold text-slate-500 uppercase tracking-wider">Email</h4>
                   <a 
-                    href={`mailto:${settings.emailAddress}`}
+                    href="mailto:designmuriha@gmail.com"
                     className="text-sm font-semibold text-slate-800 dark:text-slate-200 hover:text-primary dark:hover:text-accent transition-colors"
                   >
-                    {settings.emailAddress}
+                    designmuriha@gmail.com
                   </a>
                 </div>
               </div>
@@ -112,18 +112,6 @@ export const ContactForm: React.FC<ContactFormProps> = ({ settings }) => {
                 </div>
               </div>
 
-              {/* Box 3: Domisili */}
-              <div className="flex items-center gap-4 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/30">
-                <div className="p-3 rounded-xl bg-primary/10 text-primary shrink-0">
-                  <MapPin size={18} />
-                </div>
-                <div>
-                  <h4 className="text-xs font-bold text-slate-500 uppercase tracking-wider">Domisili</h4>
-                  <span className="text-sm font-semibold text-slate-800 dark:text-slate-200">
-                    Bandung, Jawa Barat, Indonesia
-                  </span>
-                </div>
-              </div>
             </div>
 
             {/* Social Media Row Links */}
@@ -142,9 +130,8 @@ export const ContactForm: React.FC<ContactFormProps> = ({ settings }) => {
                   </a>
                 )}
 
-                {settings.githubUrl && (
                   <a 
-                    href={settings.githubUrl} 
+                    href="https://github.com/muriha-code" 
                     target="_blank" 
                     rel="noreferrer"
                     className="p-3 rounded-full border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/30 text-slate-600 dark:text-slate-300 hover:text-white hover:bg-slate-950 hover:border-slate-950 dark:hover:bg-white dark:hover:text-slate-950 dark:hover:border-white transition-all cursor-pointer shadow-sm"
@@ -152,11 +139,9 @@ export const ContactForm: React.FC<ContactFormProps> = ({ settings }) => {
                   >
                     <Github size={16} />
                   </a>
-                )}
 
-                {settings.instagramUrl && (
                   <a 
-                    href={settings.instagramUrl} 
+                    href="https://instagram.com/muriha04" 
                     target="_blank" 
                     rel="noreferrer"
                     className="p-3 rounded-full border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/30 text-slate-600 dark:text-slate-300 hover:text-white hover:bg-gradient-to-tr hover:from-yellow-500 hover:via-red-500 hover:to-purple-600 hover:border-transparent transition-all cursor-pointer shadow-sm"
@@ -164,7 +149,6 @@ export const ContactForm: React.FC<ContactFormProps> = ({ settings }) => {
                   >
                     <Instagram size={16} />
                   </a>
-                )}
               </div>
             </div>
           </div>
