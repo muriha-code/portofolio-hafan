@@ -208,7 +208,7 @@ export default function App() {
         {/* Sections */}
         {profile && (
           <>
-            <Hero profile={profile} resumeUrl={settings?.resumeLink || '#'} />
+            <Hero profile={profile} />
             <About profile={profile} />
           </>
         )}

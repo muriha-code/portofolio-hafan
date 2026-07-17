@@ -5,10 +5,9 @@ import { Profile } from '../types';
 
 interface HeroProps {
   profile: Profile;
-  resumeUrl: string;
 }
 
-export const Hero: React.FC<HeroProps> = ({ profile, resumeUrl }) => {
+export const Hero: React.FC<HeroProps> = ({ profile }) => {
   const [typedText, setTypedText] = useState('');
   const [roleIndex, setRoleIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -158,9 +157,10 @@ export const Hero: React.FC<HeroProps> = ({ profile, resumeUrl }) => {
             </button>
 
             <a
-              href={resumeUrl && resumeUrl !== '#' ? resumeUrl : undefined}
-              download={resumeUrl && resumeUrl !== '#' ? "Muhamad_Rifky_Hafan_CV.pdf" : undefined}
-              onClick={resumeUrl && resumeUrl !== '#' ? undefined : (e) => { e.preventDefault(); alert("Silahkan hubungi Rifky atau tambahkan resume/CV melalui Admin Dashboard!"); }}
+              href={profile.resumeUrl && profile.resumeUrl !== '#' ? profile.resumeUrl : undefined}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={profile.resumeUrl && profile.resumeUrl !== '#' ? undefined : (e) => { e.preventDefault(); alert("Silahkan tambahkan CV PDF melalui dashboard admin!"); }}
               className="px-6 py-3 rounded-full text-xs font-semibold bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800/50 flex items-center gap-2 transition-all duration-300 shadow-sm cursor-pointer"
             >
               Download CV

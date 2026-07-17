@@ -9,8 +9,8 @@ interface AboutProps {
 
 export const About: React.FC<AboutProps> = ({ profile }) => {
   return (
-    <section 
-      id="about" 
+    <section
+      id="about"
       className="py-24 bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800/40 px-6 overflow-hidden"
     >
       <div className="max-w-7xl mx-auto">
@@ -26,13 +26,13 @@ export const About: React.FC<AboutProps> = ({ profile }) => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           {/* Left Column: Portrait & Simple Bio Box */}
           <div className="lg:col-span-5 flex flex-col items-center">
-            <motion.div 
+            <motion.div
               whileHover={{ scale: 1.02 }}
               transition={{ type: 'spring', stiffness: 300, damping: 20 }}
               className="relative p-2 rounded-2xl glass-premium border border-slate-200/40 dark:border-slate-800/30 w-[240px] sm:w-[280px] aspect-square overflow-hidden shadow-xl"
             >
-              <img 
-                src={profile.avatarUrl || '/profile.png'} 
+              <img
+                src={profile.avatarUrl || '/profile.png'}
                 alt="Rifky Hafan"
                 className="w-full h-full object-cover rounded-xl"
                 onError={(e) => {
@@ -117,6 +117,8 @@ export const About: React.FC<AboutProps> = ({ profile }) => {
             <div className="pt-4 flex items-center gap-4">
               <a
                 href={profile.resumeUrl && profile.resumeUrl !== '#' ? profile.resumeUrl : undefined}
+                target="_blank"
+                rel="noopener noreferrer"
                 onClick={profile.resumeUrl && profile.resumeUrl !== '#' ? undefined : (e) => { e.preventDefault(); alert("Silahkan tambahkan CV PDF melalui dashboard admin!"); }}
                 className="px-6 py-3 rounded-full text-xs font-semibold bg-primary hover:bg-primary/95 text-white flex items-center gap-2 shadow-lg shadow-primary/15 transition-all duration-300 cursor-pointer"
               >

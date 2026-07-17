@@ -9,6 +9,7 @@ import { toast, Toaster } from 'react-hot-toast';
 import { dbService } from '../services/db';
 import { Profile, Project, Skill, Experience, Certificate, GraphicDesign, Message, Settings } from '../types';
 import { LucideIcon } from './LucideIcon';
+import { ImageCropperModal } from './ImageCropperModal';
 
 interface AdminPanelProps {
   onLogout: () => void;
@@ -34,6 +35,35 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onLogout }) => {
   // Form states (Add/Edit modals)
   const [editingItem, setEditingItem] = useState<any | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Image Cropper State
+  const [pendingCrop, setPendingCrop] = useState<{
+    imageSrc: string;
+    file: File;
+    targetInputId: string;
+    aspectRatio?: number;
+    helperText?: string;
+  } | null>(null);
+
+  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>, targetInputId: string, aspectRatio?: number, helperText?: string) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    
+    // Clear input so user can reselect the same file if they cancel
+    e.target.value = '';
+
+    const reader = new FileReader();
+    reader.addEventListener('load', () => {
+      setPendingCrop({
+        imageSrc: reader.result as string,
+        file,
+        targetInputId,
+        aspectRatio,
+        helperText
+      });
+    });
+    reader.readAsDataURL(file);
+  };
 
   // Fetch all CMS records
   const fetchAllData = async () => {
@@ -588,13 +618,11 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onLogout }) => {
                       type="file" 
                       accept="image/*" 
                       className="hidden" 
-                      onChange={(e) => {
-                        const file = e.target.files?.[0];
-                        if (file) handleFileUpload(file, 'profile_avatar_url');
-                      }} 
+                      onChange={(e) => handleImageSelect(e, 'profile_avatar_url', 1, 'Rekomendasi ukuran gambar: 400 × 400 px (rasio 1:1)')}
                     />
                   </label>
                 </div>
+                <p className="text-[10px] text-slate-500 mt-1">Rekomendasi ukuran gambar: 400 × 400 px (rasio 1:1)</p>
               </div>
 
               <div className="space-y-1.5 md:col-span-2">
@@ -1086,13 +1114,11 @@ VITE_FIREBASE_APP_ID="1:1234:web:abcd"`}
                               type="file" 
                               accept="image/*" 
                               className="hidden" 
-                              onChange={(e) => {
-                                const file = e.target.files?.[0];
-                                if (file) handleFileUpload(file, 'proj_thumb_url');
-                              }} 
+                              onChange={(e) => handleImageSelect(e, 'proj_thumb_url', 16/9, 'Rekomendasi ukuran gambar: 1200 × 675 px (rasio 16:9)')}
                             />
                           </label>
                         </div>
+                        <p className="text-[10px] text-slate-500 mt-1">Rekomendasi ukuran gambar: 1200 × 675 px (rasio 16:9)</p>
                       </div>
 
                       <div className="space-y-1.5">
@@ -1216,13 +1242,11 @@ VITE_FIREBASE_APP_ID="1:1234:web:abcd"`}
                               type="file" 
                               accept="image/*" 
                               className="hidden" 
-                              onChange={(e) => {
-                                const file = e.target.files?.[0];
-                                if (file) handleFileUpload(file, 'cert_thumb_url');
-                              }} 
+                              onChange={(e) => handleImageSelect(e, 'cert_thumb_url', 4/3, 'Rekomendasi ukuran gambar: 800 × 600 px (rasio 4:3)')}
                             />
                           </label>
                         </div>
+                        <p className="text-[10px] text-slate-500 mt-1">Rekomendasi ukuran gambar: 800 × 600 px (rasio 4:3)</p>
                       </div>
 
                       <div className="space-y-1.5">
@@ -1277,13 +1301,11 @@ VITE_FIREBASE_APP_ID="1:1234:web:abcd"`}
                               type="file" 
                               accept="image/*" 
                               className="hidden" 
-                              onChange={(e) => {
-                                const file = e.target.files?.[0];
-                                if (file) handleFileUpload(file, 'gd_image_url');
-                              }} 
+                              onChange={(e) => handleImageSelect(e, 'gd_image_url', undefined, 'Rekomendasi ukuran gambar disesuaikan dengan karya (bebas, dapat atur rasio di editor).')}
                             />
                           </label>
                         </div>
+                        <p className="text-[10px] text-slate-500 mt-1">Rekomendasi ukuran gambar disesuaikan dengan karya (bebas).</p>
                       </div>
 
                       <div className="space-y-1.5">
@@ -1310,6 +1332,21 @@ VITE_FIREBASE_APP_ID="1:1234:web:abcd"`}
         )}
 
       </main>
+
+      {/* Image Cropper Modal Layer */}
+      {pendingCrop && (
+        <ImageCropperModal
+          imageSrc={pendingCrop.imageSrc}
+          fileName={pendingCrop.file.name}
+          aspectRatio={pendingCrop.aspectRatio}
+          helperText={pendingCrop.helperText}
+          onCancel={() => setPendingCrop(null)}
+          onCropCompleteAction={(croppedFile) => {
+            setPendingCrop(null);
+            handleFileUpload(croppedFile, pendingCrop.targetInputId);
+          }}
+        />
+      )}
     </div>
   );
 };
