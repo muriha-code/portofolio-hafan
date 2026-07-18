@@ -73,10 +73,11 @@ export const Navbar: React.FC<NavbarProps> = ({ darkMode, setDarkMode, logoText 
         {/* Logo */}
         <button 
           onClick={() => scrollToSection('home')}
-          className="flex items-center gap-2 font-display font-bold text-xl tracking-tight text-slate-900 dark:text-white group cursor-pointer"
+          className="flex items-center text-slate-900 dark:text-white group cursor-pointer"
         >
-          <Sparkles className="text-primary group-hover:rotate-12 transition-transform duration-300" size={20} />
-          <span>{logoText || 'Rifky.Hafan'}</span>
+          <span className="text-xl md:text-2xl font-display font-extrabold tracking-tight group-hover:text-primary transition-colors duration-300">
+            Muriha Studio
+          </span>
         </button>
 
         {/* Desktop Menu */}

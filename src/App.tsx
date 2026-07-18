@@ -24,8 +24,12 @@ import { Footer } from './components/Footer';
 // Admin Components
 import { AdminPanel } from './components/AdminPanel';
 
+// Loading Component
+import { Preloader } from './components/Preloader';
+
 export default function App() {
-  const [loading, setLoading] = useState(true);
+  const [dataLoaded, setDataLoaded] = useState(false);
+  const [showPreloader, setShowPreloader] = useState(true);
   const [darkMode, setDarkMode] = useState(() => {
     const localTheme = localStorage.getItem('rifky_theme');
     if (localTheme) return localTheme === 'dark';
@@ -84,7 +88,8 @@ export default function App() {
   // Check current admin login state & load core records
   useEffect(() => {
     const loadAllPublicData = async () => {
-      setLoading(true);
+      setDataLoaded(false);
+      setShowPreloader(true);
       try {
         const [p, s, projs, sks, exps, certs] = await Promise.all([
           dbService.getProfile(),
@@ -108,7 +113,7 @@ export default function App() {
       } catch (err) {
         console.error("Gagal sinkronisasi data:", err);
       } finally {
-        setLoading(false);
+        setDataLoaded(true);
       }
     };
 
@@ -163,17 +168,8 @@ export default function App() {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col items-center justify-center text-slate-800 dark:text-white transition-colors duration-300">
-        <div className="relative flex flex-col items-center">
-          {/* Animated gradient spinning aura */}
-          <div className="w-16 h-16 rounded-full border-4 border-slate-200 border-t-primary animate-spin mb-4" />
-          <Sparkles className="absolute top-4 text-primary animate-pulse" size={24} />
-          <p className="text-sm font-semibold tracking-wider font-display text-slate-500">Loading Premium Portfolio...</p>
-        </div>
-      </div>
-    );
+  if (showPreloader) {
+    return <Preloader isDataLoaded={dataLoaded} onFinished={() => setShowPreloader(false)} />;
   }
 
   // VIEW 1: PORTFOLIO MAIN LAYOUT (Visitor facing)
