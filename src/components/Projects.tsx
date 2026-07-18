@@ -10,6 +10,8 @@ interface ProjectsProps {
 export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
   const [activeFilter, setActiveFilter] = useState<'All' | 'Web Development' | 'Graphic Design' | 'Software Engineering'>('All');
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const projectsPerPage = 2;
 
   const filters: ('All' | 'Web Development' | 'Graphic Design' | 'Software Engineering')[] = [
     'All', 'Web Development', 'Graphic Design', 'Software Engineering'
@@ -18,6 +20,12 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
   const filteredProjects = activeFilter === 'All' 
     ? projects 
     : projects.filter(p => p.category.toLowerCase() === activeFilter.toLowerCase());
+
+  const totalPages = Math.ceil(filteredProjects.length / projectsPerPage);
+  const paginatedProjects = filteredProjects.slice(
+    (currentPage - 1) * projectsPerPage,
+    currentPage * projectsPerPage
+  );
 
   return (
     <section 
@@ -39,7 +47,10 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
           {filters.map(filter => (
             <button
               key={filter}
-              onClick={() => setActiveFilter(filter)}
+              onClick={() => {
+                setActiveFilter(filter);
+                setCurrentPage(1);
+              }}
               className={`px-4 py-2 rounded-full text-xs font-medium transition-all duration-300 cursor-pointer ${
                 activeFilter === filter
                   ? 'bg-primary text-white shadow-lg shadow-primary/25'
@@ -57,7 +68,7 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
           className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch"
         >
           <AnimatePresence mode="popLayout">
-            {filteredProjects.map((project) => (
+            {paginatedProjects.map((project) => (
               <motion.div
                 layout
                 key={project.id}
@@ -171,6 +182,43 @@ export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
         {filteredProjects.length === 0 && (
           <div className="text-center py-16 text-slate-400 italic text-sm">
             Belum ada project untuk kategori ini.
+          </div>
+        )}
+
+        {/* Pagination Controls */}
+        {totalPages > 1 && (
+          <div className="flex justify-center items-center gap-2 mt-12">
+            <button
+              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+              className="px-4 py-2 rounded-full text-xs font-medium transition-all duration-300 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700/60 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+            >
+              Previous
+            </button>
+            
+            <div className="flex gap-1">
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                <button
+                  key={page}
+                  onClick={() => setCurrentPage(page)}
+                  className={`w-8 h-8 rounded-full text-xs font-bold transition-all duration-300 cursor-pointer ${
+                    currentPage === page
+                      ? 'bg-primary text-white shadow-md shadow-primary/25'
+                      : 'bg-transparent text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+                  }`}
+                >
+                  {page}
+                </button>
+              ))}
+            </div>
+
+            <button
+              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+              disabled={currentPage === totalPages}
+              className="px-4 py-2 rounded-full text-xs font-medium transition-all duration-300 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700/60 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+            >
+              Next
+            </button>
           </div>
         )}
       </div>
