@@ -14,7 +14,8 @@ export const Hero: React.FC<HeroProps> = ({ profile }) => {
   
   const roles = [
     "Computer Science Student",
-    "Web Developer"
+    "Web Developer",
+    "Graphic Designer"
   ];
 
   const typingSpeed = isDeleting ? 40 : 80;
