@@ -22,7 +22,7 @@ import {
   where
 } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { Profile, Project, Skill, Experience, Certificate, GraphicDesign, Message, Settings } from '../types';
+import { Profile, Project, Skill, Experience, Certificate, Message, Settings } from '../types';
 
 // Detect if real Firebase config is available in env
 const firebaseConfig = {
@@ -68,10 +68,10 @@ if (isFirebaseConfigured) {
 const defaultProfile: Profile = {
   name: "Muhamad Rifky Hafan",
   title: "Information Science Student",
-  subtitle: "Web Developer & Graphic Designer",
-  description: "Saya adalah mahasiswa Sains Informasi yang memiliki ketertarikan besar dalam pengembangan website modern, UI/UX Design, dan Graphic Design. Saya senang membangun website yang cepat, responsif, memiliki pengalaman pengguna yang baik, serta menghasilkan desain visual yang menarik dan fungsional.",
+  subtitle: "Web Developer",
+  description: "Saya adalah mahasiswa Sains Informasi yang memiliki ketertarikan besar dalam pengembangan website modern dan UI/UX Design. Saya senang membangun website yang cepat, responsif, memiliki pengalaman pengguna yang baik, serta fungsional.",
   avatarUrl: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=600", // Placeholder elegant avatar
-  bio: "Halo! Saya Muhamad Rifky Hafan, seorang mahasiswa Sains Informasi dengan hasrat mendalam pada integrasi antara teknologi dan seni visual. Fokus saya adalah menciptakan solusi digital yang fungsional tanpa mengorbankan estetika visual. Melalui keahlian dalam Frontend/Full-Stack Development dan Graphic Design, saya membantu brand dan startup menerjemahkan ide mereka menjadi produk digital yang premium.",
+  bio: "Halo! Saya Muhamad Rifky Hafan, seorang mahasiswa Sains Informasi dengan hasrat mendalam pada integrasi antara teknologi dan desain UI/UX. Fokus saya adalah menciptakan solusi digital yang fungsional tanpa mengorbankan estetika visual. Melalui keahlian dalam Frontend/Full-Stack Development, saya membantu brand dan startup menerjemahkan ide mereka menjadi produk digital yang premium.",
   education: "S1 Sains Informasi - Universitas Padjadjaran",
   passion: "Menciptakan desain web interaktif, tipografi presisi, dan arsitektur kode bersih yang ramah SEO.",
   careerObjective: "Menjadi seorang Frontend Engineer atau UI/UX Designer yang berkontribusi aktif dalam menciptakan produk digital berdampak tinggi di industri teknologi.",
@@ -87,8 +87,8 @@ const defaultSettings: Settings = {
   instagramUrl: "https://instagram.com/rifkyhafan",
   emailAddress: "muhrifkyh527190@gmail.com",
   whatsappNumber: "+6281234567890",
-  metaDescription: "Website portfolio pribadi Muhamad Rifky Hafan - Web Developer & Graphic Designer",
-  heroText: "Developing Premium Web Solutions & Crafting Stunning Graphic Designs"
+  metaDescription: "Website portfolio pribadi Muhamad Rifky Hafan - Web Developer",
+  heroText: "Developing Premium Web Solutions"
 };
 
 const defaultSkills: Skill[] = [
@@ -180,50 +180,6 @@ const defaultProjects: Project[] = [
   }
 ];
 
-const defaultGraphicDesigns: GraphicDesign[] = [
-  {
-    id: 'g1',
-    title: "Minimalist Neo-Brutalist Poster",
-    category: "Poster",
-    imageUrl: "https://images.unsplash.com/photo-1561070791-26c113006238?auto=format&fit=crop&q=80&w=800",
-    description: "Desain poster neo-brutalist dengan kontras tinggi dan layout asimetris."
-  },
-  {
-    id: 'g2',
-    title: "Geometric Brand Identity",
-    category: "Branding",
-    imageUrl: "https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&fit=crop&q=80&w=800",
-    description: "Identitas visual logomark berbasis geometri lingkaran emas."
-  },
-  {
-    id: 'g3',
-    title: "Abstract Album Art Cover",
-    category: "Art",
-    imageUrl: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&q=80&w=800",
-    description: "Desain kover seni abstrak bertema fluid dynamics dan fluid grid."
-  },
-  {
-    id: 'g4',
-    title: "Vector Flat Illustration",
-    category: "Illustration",
-    imageUrl: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=800",
-    description: "Ilustrasi lanskap minimalis bergaya flat vector."
-  },
-  {
-    id: 'g5',
-    title: "UI/UX App Dashboard Mockup",
-    category: "UI Design",
-    imageUrl: "https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?auto=format&fit=crop&q=80&w=800",
-    description: "Mockup antarmuka analisis finansial gelap."
-  },
-  {
-    id: 'g6',
-    title: "Retro Typography Design",
-    category: "Typography",
-    imageUrl: "https://images.unsplash.com/photo-1509281373149-e957c6296406?auto=format&fit=crop&q=80&w=800",
-    description: "Kombinasi font vintage dengan efek tekstur kertas lawas."
-  }
-];
 
 const defaultExperiences: Experience[] = [
   {
@@ -611,55 +567,6 @@ export const dbService = {
     }
   },
 
-  // Graphic Designs CRUD
-  async getGraphicDesigns(): Promise<GraphicDesign[]> {
-    if (isFirebaseConfigured && firestore) {
-      const colRef = collection(firestore, "graphic_designs");
-      const querySnapshot = await getDocs(colRef);
-      const list: GraphicDesign[] = [];
-      querySnapshot.forEach((doc) => {
-        list.push({ id: doc.id, ...doc.data() } as GraphicDesign);
-      });
-      return list;
-    } else {
-      return loadLocal('rifky_graphic_designs', defaultGraphicDesigns);
-    }
-  },
-
-  async createGraphicDesign(gDesign: Omit<GraphicDesign, 'id'>): Promise<GraphicDesign> {
-    const id = 'g_' + Date.now().toString();
-    const newDesign = { id, ...gDesign };
-    if (isFirebaseConfigured && firestore) {
-      await setDoc(doc(firestore, "graphic_designs", id), gDesign);
-    } else {
-      const list = await this.getGraphicDesigns();
-      list.push(newDesign);
-      saveLocal('rifky_graphic_designs', list);
-    }
-    return newDesign;
-  },
-
-  async updateGraphicDesign(id: string, gDesign: Partial<GraphicDesign>): Promise<void> {
-    if (isFirebaseConfigured && firestore) {
-      const docRef = doc(firestore, "graphic_designs", id);
-      await updateDoc(docRef, gDesign);
-    } else {
-      const list = await this.getGraphicDesigns();
-      const updated = list.map(item => item.id === id ? { ...item, ...gDesign } as GraphicDesign : item);
-      saveLocal('rifky_graphic_designs', updated);
-    }
-  },
-
-  async deleteGraphicDesign(id: string): Promise<void> {
-    if (isFirebaseConfigured && firestore) {
-      const docRef = doc(firestore, "graphic_designs", id);
-      await deleteDoc(docRef);
-    } else {
-      const list = await this.getGraphicDesigns();
-      const filtered = list.filter(item => item.id !== id);
-      saveLocal('rifky_graphic_designs', filtered);
-    }
-  },
 
   // Messages CRUD
   async getMessages(): Promise<Message[]> {

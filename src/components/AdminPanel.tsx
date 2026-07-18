@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 import { toast, Toaster } from 'react-hot-toast';
 import { dbService } from '../services/db';
-import { Profile, Project, Skill, Experience, Certificate, GraphicDesign, Message, Settings } from '../types';
+import { Profile, Project, Skill, Experience, Certificate, Message, Settings } from '../types';
 import { LucideIcon } from './LucideIcon';
 import { ImageCropperModal } from './ImageCropperModal';
 
@@ -16,7 +16,7 @@ interface AdminPanelProps {
 }
 
 export const AdminPanel: React.FC<AdminPanelProps> = ({ onLogout }) => {
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'profile' | 'projects' | 'skills' | 'experience' | 'certificates' | 'graphic' | 'messages' | 'settings'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'profile' | 'projects' | 'skills' | 'experience' | 'certificates' | 'messages' | 'settings'>('dashboard');
   
   // States for database entities
   const [profile, setProfile] = useState<Profile | null>(null);
@@ -25,7 +25,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onLogout }) => {
   const [skills, setSkills] = useState<Skill[]>([]);
   const [experiences, setExperiences] = useState<Experience[]>([]);
   const [certificates, setCertificates] = useState<Certificate[]>([]);
-  const [graphicDesigns, setGraphicDesigns] = useState<GraphicDesign[]>([]);
+
   const [messages, setMessages] = useState<Message[]>([]);
 
   // Loading states
@@ -69,14 +69,13 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onLogout }) => {
   const fetchAllData = async () => {
     setLoading(true);
     try {
-      const [p, s, projs, sks, exps, certs, gds, msgs] = await Promise.all([
+      const [p, s, projs, sks, exps, certs, msgs] = await Promise.all([
         dbService.getProfile(),
         dbService.getSettings(),
         dbService.getProjects(),
         dbService.getSkills(),
         dbService.getExperiences(),
         dbService.getCertificates(),
-        dbService.getGraphicDesigns(),
         dbService.getMessages()
       ]);
       setProfile(p);
@@ -85,7 +84,6 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onLogout }) => {
       setSkills(sks);
       setExperiences(exps);
       setCertificates(certs);
-      setGraphicDesigns(gds);
       setMessages(msgs);
     } catch (error) {
       console.error("Gagal memuat data CMS:", error);
@@ -244,21 +242,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onLogout }) => {
           await dbService.updateCertificate(editingItem.id, payload);
           toast.success("Sertifikat berhasil diperbarui!");
         }
-      } else if (activeTab === 'graphic') {
-        const payload = {
-          title: formData.get('title') as string,
-          category: formData.get('category') as string,
-          imageUrl: formData.get('imageUrl') as string,
-          description: formData.get('description') as string,
-        };
 
-        if (editingItem._isNew) {
-          await dbService.createGraphicDesign(payload);
-          toast.success("Desain baru berhasil ditambahkan ke galeri!");
-        } else {
-          await dbService.updateGraphicDesign(editingItem.id, payload);
-          toast.success("Desain berhasil diperbarui!");
-        }
       }
 
       setIsModalOpen(false);
@@ -278,7 +262,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onLogout }) => {
       else if (activeTab === 'skills') await dbService.deleteSkill(id);
       else if (activeTab === 'experience') await dbService.deleteExperience(id);
       else if (activeTab === 'certificates') await dbService.deleteCertificate(id);
-      else if (activeTab === 'graphic') await dbService.deleteGraphicDesign(id);
+
       
       toast.success("Data berhasil dihapus!");
       fetchAllData();
@@ -333,7 +317,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onLogout }) => {
 
   // Sidebar Menu Items
   interface MenuItem {
-    id: 'dashboard' | 'profile' | 'projects' | 'skills' | 'experience' | 'certificates' | 'graphic' | 'messages' | 'settings';
+    id: 'dashboard' | 'profile' | 'projects' | 'skills' | 'experience' | 'certificates' | 'messages' | 'settings';
     label: string;
     icon: any;
     badge?: number;
@@ -346,7 +330,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onLogout }) => {
     { id: 'skills', label: 'Skills', icon: Shield },
     { id: 'experience', label: 'Experience', icon: Briefcase },
     { id: 'certificates', label: 'Certificates', icon: Award },
-    { id: 'graphic', label: 'Graphic Design', icon: Palette },
+
     { id: 'messages', label: 'Messages', icon: MessageSquare, badge: messages.filter(m => !m.read).length },
     { id: 'settings', label: 'Settings', icon: SettingsIcon },
   ];
@@ -431,7 +415,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onLogout }) => {
         <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-200/50 dark:border-slate-800/50 pb-6 mb-8">
           <div>
             <h1 className="text-2xl font-display font-bold text-slate-900 dark:text-white capitalize">
-              {activeTab === 'graphic' ? 'Graphic Design Gallery' : activeTab}
+              {activeTab}
             </h1>
             <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
               Kelola dan sinkronisasi data {activeTab} portofolio Anda ke Firestore
@@ -480,15 +464,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onLogout }) => {
                 </div>
               </div>
 
-              <div className="p-6 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/50 dark:border-slate-800/40 shadow-sm flex items-center justify-between">
-                <div>
-                  <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest">Graphic Designs</h4>
-                  <p className="text-3xl font-display font-bold text-slate-900 dark:text-white mt-2">{graphicDesigns.length}</p>
-                </div>
-                <div className="p-3 rounded-2xl bg-primary/10 text-primary">
-                  <Palette size={20} />
-                </div>
-              </div>
+
 
               <div className="p-6 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/50 dark:border-slate-800/40 shadow-sm flex items-center justify-between">
                 <div>
@@ -837,41 +813,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onLogout }) => {
           </div>
         )}
 
-        {/* TAB 7: GRAPHIC DESIGN */}
-        {activeTab === 'graphic' && (
-          <div className="space-y-6 animate-fadeIn">
-            <div className="flex justify-end">
-              <button onClick={openAddModal} className="px-4 py-2.5 rounded-xl bg-primary hover:bg-primary/95 text-white text-xs font-bold flex items-center gap-1.5 cursor-pointer shadow">
-                <PlusCircle size={16} /> Tambah Desain Galeri
-              </button>
-            </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-              {graphicDesigns.map((gd) => (
-                <div key={gd.id} className="p-3 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/50 dark:border-slate-800/40 shadow-sm flex flex-col justify-between text-left">
-                  <div className="space-y-2.5">
-                    <div className="aspect-square rounded-xl bg-slate-100 dark:bg-slate-800 overflow-hidden">
-                      <img src={gd.imageUrl} alt={gd.title} className="w-full h-full object-cover" onError={(e) => { e.currentTarget.src = "https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&q=80&w=200"; }} referrerPolicy="no-referrer" />
-                    </div>
-                    <div>
-                      <span className="text-[9px] font-bold uppercase text-slate-400">{gd.category}</span>
-                      <h3 className="text-xs font-bold text-slate-900 dark:text-white line-clamp-1 mt-0.5">{gd.title}</h3>
-                    </div>
-                  </div>
-                  <div className="flex justify-end border-t border-slate-100 dark:border-slate-800/50 pt-2.5 mt-3">
-                    <div className="flex gap-1">
-                      <button onClick={() => openEditModal(gd)} className="p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 cursor-pointer"><Edit2 size={12} /></button>
-                      <button onClick={() => handleCRUDDelete(gd.id)} className="p-1 rounded hover:bg-red-50 dark:hover:bg-red-950/30 text-red-500 cursor-pointer"><Trash2 size={12} /></button>
-                    </div>
-                  </div>
-                </div>
-              ))}
-              {graphicDesigns.length === 0 && (
-                <div className="col-span-full py-16 text-center text-slate-400 italic text-sm">Belum ada karya galeri desain grafis. Klik tombol tambah untuk menambahkan!</div>
-              )}
-            </div>
-          </div>
-        )}
 
         {/* TAB 8: MESSAGES */}
         {activeTab === 'messages' && (
@@ -1058,8 +1000,8 @@ VITE_FIREBASE_APP_ID="1:1234:web:abcd"`}
                           <label className="text-[10px] font-bold text-slate-400 uppercase">Kategori</label>
                           <select name="category" defaultValue={editingItem.category || 'Web Development'} className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-sm text-slate-800 dark:text-white focus:outline-none focus:border-primary">
                             <option value="Web Development">Web Development</option>
-                            <option value="UI Design">UI Design</option>
                             <option value="Graphic Design">Graphic Design</option>
+                            <option value="Software Engineering">Software Engineering</option>
                           </select>
                         </div>
                       </div>
@@ -1268,52 +1210,7 @@ VITE_FIREBASE_APP_ID="1:1234:web:abcd"`}
                         </div>
                       </div>
                     </div>
-                  )}
-
-                  {/* Active Tab: GRAPHIC DESIGN INPUTS */}
-                  {activeTab === 'graphic' && (
-                    <div className="space-y-4 text-xs font-semibold text-slate-700 dark:text-slate-300">
-                      <div className="grid grid-cols-2 gap-4">
-                        <div className="space-y-1.5">
-                          <label className="text-[10px] font-bold text-slate-400 uppercase">Judul Karya Desain</label>
-                          <input required type="text" name="title" defaultValue={editingItem.title || ''} placeholder="Minimalist Neo-Brutalist Poster" className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-transparent text-sm text-slate-800 dark:text-white focus:outline-none focus:border-primary" />
-                        </div>
-                        <div className="space-y-1.5">
-                          <label className="text-[10px] font-bold text-slate-400 uppercase">Kategori Karya</label>
-                          <select name="category" defaultValue={editingItem.category || 'Poster'} className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-sm text-slate-800 dark:text-white focus:outline-none focus:border-primary">
-                            <option value="Poster">Poster</option>
-                            <option value="Branding">Branding Identity</option>
-                            <option value="Art">Abstract Art</option>
-                            <option value="Illustration">Illustration</option>
-                            <option value="UI Design">UI Design Mockup</option>
-                            <option value="Typography">Typography Artwork</option>
-                          </select>
-                        </div>
-                      </div>
-
-                      <div className="space-y-1.5">
-                        <label className="text-[10px] font-bold text-slate-400 uppercase">Gambar Desain URL (atau upload file)</label>
-                        <div className="flex gap-4">
-                          <input id="gd_image_url" required type="text" name="imageUrl" defaultValue={editingItem.imageUrl || ''} placeholder="https://unsplash.com/..." className="flex-1 px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-transparent text-sm text-slate-800 dark:text-white focus:outline-none focus:border-primary" />
-                          <label className="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 cursor-pointer flex items-center justify-center shrink-0">
-                            <Upload size={16} />
-                            <input 
-                              type="file" 
-                              accept="image/*" 
-                              className="hidden" 
-                              onChange={(e) => handleImageSelect(e, 'gd_image_url', undefined, 'Rekomendasi ukuran gambar disesuaikan dengan karya (bebas, dapat atur rasio di editor).')}
-                            />
-                          </label>
-                        </div>
-                        <p className="text-[10px] text-slate-500 mt-1">Rekomendasi ukuran gambar disesuaikan dengan karya (bebas).</p>
-                      </div>
-
-                      <div className="space-y-1.5">
-                        <label className="text-[10px] font-bold text-slate-400 uppercase">Penjelasan / Deskripsi Seni (Opsional)</label>
-                        <textarea rows={3} name="description" defaultValue={editingItem.description || ''} placeholder="Poster bertema asimetris modern..." className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-transparent text-sm text-slate-800 dark:text-white focus:outline-none focus:border-primary resize-none" />
-                      </div>
-                    </div>
-                  )}
+                    )}
 
                 </div>
 

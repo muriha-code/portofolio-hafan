@@ -7,7 +7,7 @@ import { motion } from 'motion/react';
 
 // Database Service & Entities
 import { dbService } from './services/db';
-import { Profile, Project, Skill, Experience, Certificate, GraphicDesign, Settings } from './types';
+import { Profile, Project, Skill, Experience, Certificate, Settings } from './types';
 
 // Visitor Components
 import { Navbar } from './components/Navbar';
@@ -15,7 +15,7 @@ import { Hero } from './components/Hero';
 import { About } from './components/About';
 import { Skills } from './components/Skills';
 import { Projects } from './components/Projects';
-import { GraphicDesignGallery } from './components/GraphicDesignGallery';
+
 import { ExperienceTimeline } from './components/ExperienceTimeline';
 import { Certificates } from './components/Certificates';
 import { ContactForm } from './components/ContactForm';
@@ -44,7 +44,7 @@ export default function App() {
   const [skills, setSkills] = useState<Skill[]>([]);
   const [experiences, setExperiences] = useState<Experience[]>([]);
   const [certificates, setCertificates] = useState<Certificate[]>([]);
-  const [graphicDesigns, setGraphicDesigns] = useState<GraphicDesign[]>([]);
+
 
   // Toggle Dark Mode globally
   useEffect(() => {
@@ -86,14 +86,13 @@ export default function App() {
     const loadAllPublicData = async () => {
       setLoading(true);
       try {
-        const [p, s, projs, sks, exps, certs, gds] = await Promise.all([
+        const [p, s, projs, sks, exps, certs] = await Promise.all([
           dbService.getProfile(),
           dbService.getSettings(),
           dbService.getProjects(),
           dbService.getSkills(),
           dbService.getExperiences(),
-          dbService.getCertificates(),
-          dbService.getGraphicDesigns()
+          dbService.getCertificates()
         ]);
         setProfile(p);
         setSettings(s);
@@ -101,7 +100,6 @@ export default function App() {
         setSkills(sks);
         setExperiences(exps);
         setCertificates(certs);
-        setGraphicDesigns(gds);
 
         // Apply dynamically loaded browser tab title
         if (s?.websiteTitle) {
@@ -205,7 +203,7 @@ export default function App() {
         
         <Skills skills={skills} />
         <Projects projects={projects} />
-        <GraphicDesignGallery designs={graphicDesigns} />
+
         <ExperienceTimeline experiences={experiences} />
         <Certificates certificates={certificates} />
         

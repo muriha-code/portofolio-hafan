@@ -59,7 +59,7 @@ export const About: React.FC<AboutProps> = ({ profile }) => {
                 </li>
                 <li className="flex justify-between py-1">
                   <span className="font-medium text-slate-500">Karier</span>
-                  <span>Web Dev & Graphic Designer</span>
+                  <span>Web Developer</span>
                 </li>
               </ul>
             </div>
@@ -69,10 +69,10 @@ export const About: React.FC<AboutProps> = ({ profile }) => {
           <div className="lg:col-span-7 flex flex-col gap-8 text-left">
             <div>
               <h3 className="text-xl font-display font-bold text-slate-900 dark:text-white mb-4">
-                Membangun Solusi Digital Melalui Web Development & Graphic Design
+                Membangun Solusi Digital Melalui Web Development & Graphic Designer
               </h3>
               <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed mb-4">
-                Halo! Saya Muhamad Rifky Hafan, mahasiswa S1 Teknik Informatika yang memiliki minat besar pada bidang Web Development dan Graphic Design. Saya senang mengembangkan website yang modern, responsif, dan mudah digunakan, serta menciptakan desain visual yang menarik untuk berbagai kebutuhan digital. Saya terus mengembangkan kemampuan dalam pemrograman web dan desain grafis melalui berbagai proyek, sehingga mampu menghasilkan solusi digital yang fungsional, kreatif, dan memberikan pengalaman pengguna yang lebih baik.
+                Halo! Saya Muhamad Rifky Hafan, mahasiswa S1 Teknik Informatika yang memiliki minat besar pada bidang Web Development dan Graphic Designer. Saya senang mengembangkan website yang modern, responsif, dan mudah digunakan, serta merancang pengalaman pengguna yang intuitif. Saya terus mengembangkan kemampuan dalam pemrograman web dan desain antarmuka melalui berbagai proyek, sehingga mampu menghasilkan solusi digital yang fungsional, kreatif, dan memberikan pengalaman pengguna yang lebih baik.
               </p>
             </div>
 

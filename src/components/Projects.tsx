@@ -8,11 +8,11 @@ interface ProjectsProps {
 }
 
 export const Projects: React.FC<ProjectsProps> = ({ projects }) => {
-  const [activeFilter, setActiveFilter] = useState<'All' | 'Web Development' | 'UI Design' | 'Graphic Design'>('All');
+  const [activeFilter, setActiveFilter] = useState<'All' | 'Web Development' | 'Graphic Design' | 'Software Engineering'>('All');
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
-  const filters: ('All' | 'Web Development' | 'UI Design' | 'Graphic Design')[] = [
-    'All', 'Web Development', 'UI Design', 'Graphic Design'
+  const filters: ('All' | 'Web Development' | 'Graphic Design' | 'Software Engineering')[] = [
+    'All', 'Web Development', 'Graphic Design', 'Software Engineering'
   ];
 
   const filteredProjects = activeFilter === 'All' 

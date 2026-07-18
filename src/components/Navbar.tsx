@@ -18,7 +18,7 @@ export const Navbar: React.FC<NavbarProps> = ({ darkMode, setDarkMode, logoText 
     { id: 'about', label: 'About' },
     { id: 'skills', label: 'Skills' },
     { id: 'projects', label: 'Projects' },
-    { id: 'graphic-design', label: 'Graphic Design' },
+
     { id: 'experience', label: 'Experience' },
     { id: 'certificates', label: 'Certificates' },
     { id: 'contact', label: 'Contact' },

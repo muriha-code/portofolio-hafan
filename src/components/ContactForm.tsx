@@ -6,7 +6,7 @@ import { toast, Toaster } from 'react-hot-toast';
 import { Mail, Phone, Send, Linkedin, Github, Instagram, ArrowRight, Loader2 } from 'lucide-react';
 import { dbService } from '../services/db';
 import { Settings } from '../types';
-
+  
 interface ContactFormProps {
   settings: Settings;
 }

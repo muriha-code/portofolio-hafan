@@ -22,7 +22,7 @@ export interface Project {
   githubUrl: string;
   liveUrl: string;
   featured: boolean;
-  category: 'Web Development' | 'UI Design' | 'Graphic Design' | string;
+  category: 'Web Development' | 'Graphic Design' | 'Software Engineering' | string;
   year: string;
 }
 
@@ -50,14 +50,6 @@ export interface Certificate {
   issuer: string;
   thumbnailUrl: string;
   pdfUrl: string;
-}
-
-export interface GraphicDesign {
-  id: string;
-  title: string;
-  category: string;
-  imageUrl: string;
-  description?: string;
 }
 
 export interface Message {

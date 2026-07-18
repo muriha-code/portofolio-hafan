@@ -14,8 +14,7 @@ export const Hero: React.FC<HeroProps> = ({ profile }) => {
   
   const roles = [
     "Computer Science Student",
-    "Web Developer",
-    "Graphic Designer"
+    "Web Developer"
   ];
 
   const typingSpeed = isDeleting ? 40 : 80;
@@ -130,7 +129,7 @@ export const Hero: React.FC<HeroProps> = ({ profile }) => {
             transition={{ duration: 0.5, delay: 0.4 }}
             className="text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed max-w-xl mb-8"
           >
-            {profile.description || "Saya adalah mahasiswa Sains Informasi yang memiliki ketertarikan besar dalam pengembangan website modern, UI/UX Design, dan Graphic Design. Saya senang membangun website yang cepat, responsif, memiliki pengalaman pengguna yang baik, serta menghasilkan desain visual yang menarik dan fungsional."}
+            {profile.description || "Saya adalah mahasiswa Sains Informasi yang memiliki ketertarikan besar dalam pengembangan website modern dan UI/UX Design. Saya senang membangun website yang cepat, responsif, memiliki pengalaman pengguna yang baik, serta fungsional."}
           </motion.p>
 
           <motion.div
