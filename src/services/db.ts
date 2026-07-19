@@ -93,25 +93,22 @@ const defaultSettings: Settings = {
 
 const defaultSkills: Skill[] = [
   // Frontend
-  { id: 'f1', name: 'HTML', category: 'Frontend', level: 95, iconName: 'Code' },
-  { id: 'f2', name: 'CSS', category: 'Frontend', level: 90, iconName: 'Palette' },
-  { id: 'f3', name: 'JavaScript', category: 'Frontend', level: 92, iconName: 'Zap' },
-  { id: 'f4', name: 'TypeScript', category: 'Frontend', level: 88, iconName: 'ShieldCheck' },
-  { id: 'f5', name: 'React', category: 'Frontend', level: 90, iconName: 'Cpu' },
-  { id: 'f6', name: 'Next.js', category: 'Frontend', level: 85, iconName: 'Terminal' },
-  { id: 'f7', name: 'Tailwind CSS', category: 'Frontend', level: 95, iconName: 'Wind' },
+  { id: 'f1', name: 'HTML5', category: 'Frontend', iconName: 'Code' },
+  { id: 'f2', name: 'CSS3', category: 'Frontend', iconName: 'Palette' },
+  { id: 'f3', name: 'JavaScript', category: 'Frontend', iconName: 'Zap' },
+  { id: 'f4', name: 'Tailwind CSS', category: 'Frontend', iconName: 'Wind' },
   // Backend
-  { id: 'b1', name: 'Node.js', category: 'Backend', level: 82, iconName: 'Layers' },
-  { id: 'b2', name: 'Express.js', category: 'Backend', level: 80, iconName: 'Server' },
-  { id: 'b3', name: 'Firebase', category: 'Backend', level: 85, iconName: 'Flame' },
+  { id: 'b1', name: 'PHP', category: 'Backend', iconName: 'Layers' },
+  { id: 'b2', name: 'Node.js', category: 'Backend', iconName: 'Server' },
+  { id: 'b3', name: 'Firebase', category: 'Backend', iconName: 'Flame' },
   // Database
-  { id: 'd1', name: 'Firestore', category: 'Database', level: 85, iconName: 'Database' },
-  { id: 'd2', name: 'Firebase Storage', category: 'Database', level: 80, iconName: 'FolderGit2' },
+  { id: 'd1', name: 'MySQL', category: 'Database', iconName: 'Database' },
+  { id: 'd2', name: 'Firestore', category: 'Database', iconName: 'Database' },
+  { id: 'd3', name: 'Firebase Storage', category: 'Database', iconName: 'FolderGit2' },
   // UI/UX & Design
-  { id: 'u1', name: 'Figma', category: 'UI/UX & Design', level: 92, iconName: 'Figma' },
-  { id: 'u2', name: 'Adobe Photoshop', category: 'UI/UX & Design', level: 85, iconName: 'Image' },
-  { id: 'u3', name: 'Adobe Illustrator', category: 'UI/UX & Design', level: 88, iconName: 'PenTool' },
-  { id: 'u4', name: 'Canva', category: 'UI/UX & Design', level: 90, iconName: 'Compass' }
+  { id: 'u1', name: 'Figma', category: 'UI/UX & Design', iconName: 'Figma' },
+  { id: 'u2', name: 'Canva', category: 'UI/UX & Design', iconName: 'Compass' },
+  { id: 'u3', name: 'Adobe Express', category: 'UI/UX & Design', iconName: 'PenTool' }
 ];
 
 const defaultProjects: Project[] = [

@@ -40,33 +40,25 @@ export const Skills: React.FC<SkillsProps> = ({ skills }) => {
                   {cat}
                 </h3>
 
-                <div className="space-y-5">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-3">
                   {catSkills.length > 0 ? (
-                    catSkills.map((skill) => (
-                      <div key={skill.id} className="space-y-1.5">
-                        <div className="flex items-center justify-between text-xs font-semibold">
-                          <div className="flex items-center gap-2 text-slate-700 dark:text-slate-300">
-                            <LucideIcon name={skill.iconName || 'Code'} className="text-primary/75 dark:text-accent/75" size={14} />
-                            <span>{skill.name}</span>
-                          </div>
-                          <span className="text-slate-500">{skill.level}%</span>
+                    catSkills.map((skill, index) => (
+                      <motion.div 
+                        key={skill.id} 
+                        initial={{ opacity: 0, y: 10 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: index * 0.05, duration: 0.4 }}
+                        className="flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 dark:border-slate-700/50 bg-slate-50 dark:bg-slate-800/50 hover:bg-white dark:hover:bg-slate-800 hover:border-primary dark:hover:border-primary hover:shadow-md hover:shadow-primary/5 hover:scale-[1.02] transition-all duration-300 cursor-default group"
+                      >
+                        <div className="p-1.5 rounded-lg bg-white dark:bg-slate-900 shadow-sm border border-slate-100 dark:border-slate-800 text-slate-600 dark:text-slate-400 group-hover:text-primary group-hover:border-primary/20 transition-colors">
+                          <LucideIcon name={skill.iconName || 'Code'} size={16} />
                         </div>
-
-                        {/* Progress Bar Container */}
-                        <div className="w-full h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
-                          {/* Animated progress bar on scroll reveal */}
-                          <motion.div
-                            initial={{ width: 0 }}
-                            whileInView={{ width: `${skill.level}%` }}
-                            viewport={{ once: true, margin: '-20px' }}
-                            transition={{ duration: 1.2, ease: 'easeOut' }}
-                            className="h-full rounded-full bg-gradient-to-r from-primary to-accent"
-                          />
-                        </div>
-                      </div>
+                        <span className="text-xs font-semibold text-slate-700 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white transition-colors line-clamp-1">{skill.name}</span>
+                      </motion.div>
                     ))
                   ) : (
-                    <p className="text-xs text-slate-500 italic">Belum ada skill ditambahkan untuk kategori ini.</p>
+                    <p className="text-xs text-slate-500 italic col-span-full">Belum ada skill ditambahkan untuk kategori ini.</p>
                   )}
                 </div>
               </div>

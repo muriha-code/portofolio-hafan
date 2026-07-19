@@ -199,7 +199,6 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onLogout }) => {
         const payload = {
           name: formData.get('name') as string,
           category: formData.get('category') as string,
-          level: parseInt(formData.get('level') as string) || 0,
           iconName: formData.get('iconName') as string,
         };
 
@@ -726,7 +725,6 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onLogout }) => {
                     <div>
                       <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider">{skill.category}</h4>
                       <h3 className="text-sm font-bold text-slate-900 dark:text-white mt-0.5">{skill.name}</h3>
-                      <span className="text-[10px] text-slate-500 mt-1 block">Level: {skill.level}%</span>
                     </div>
                   </div>
                   <div className="flex gap-1">
@@ -1089,11 +1087,7 @@ VITE_FIREBASE_APP_ID="1:1234:web:abcd"`}
                         </div>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-4">
-                        <div className="space-y-1.5">
-                          <label className="text-[10px] font-bold text-slate-400 uppercase">Progress Level (0 - 100)</label>
-                          <input required type="number" min="0" max="100" name="level" defaultValue={editingItem.level || 90} className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-transparent text-sm text-slate-800 dark:text-white focus:outline-none focus:border-primary" />
-                        </div>
+                      <div className="grid grid-cols-1 gap-4">
                         <div className="space-y-1.5">
                           <label className="text-[10px] font-bold text-slate-400 uppercase">Icon Name (Lucide string name)</label>
                           <select name="iconName" defaultValue={editingItem.iconName || 'Code'} className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-sm text-slate-800 dark:text-white focus:outline-none focus:border-primary">

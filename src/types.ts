@@ -30,7 +30,6 @@ export interface Skill {
   id: string;
   name: string;
   category: 'Frontend' | 'Backend' | 'Database' | 'UI/UX & Design' | string;
-  level: number; // 0 to 100 for animations
   iconName: string; // Lucide icon name or similar
 }
 
