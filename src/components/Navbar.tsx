@@ -18,11 +18,17 @@ export const Navbar: React.FC<NavbarProps> = ({ darkMode, setDarkMode, logoText 
     { id: 'about', label: 'About' },
     { id: 'skills', label: 'Skills' },
     { id: 'projects', label: 'Projects' },
-
     { id: 'experience', label: 'Experience' },
     { id: 'certificates', label: 'Certificates' },
     { id: 'contact', label: 'Contact' },
   ];
+
+  useEffect(() => {
+    const currentItem = navItems.find(item => item.id === activeSection);
+    if (currentItem) {
+      document.title = `Muriha Studio – ${currentItem.label}`;
+    }
+  }, [activeSection]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -147,42 +153,81 @@ export const Navbar: React.FC<NavbarProps> = ({ darkMode, setDarkMode, logoText 
         </div>
       </div>
 
-      {/* Mobile Drawer */}
+      {/* Mobile Sidebar */}
       <AnimatePresence>
         {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden border-b border-slate-200/60 dark:border-slate-800/50 glass overflow-hidden absolute top-full left-0 right-0"
-          >
-            <div className="flex flex-col p-6 gap-3">
-              {navItems.map((item) => {
-                const isActive = activeSection === item.id;
-                return (
-                  <button
-                    key={item.id}
-                    onClick={() => scrollToSection(item.id)}
-                    className={`flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium transition-colors cursor-pointer ${
-                      isActive
-                        ? 'bg-primary/10 text-primary dark:text-accent font-semibold'
-                        : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900/60'
-                    }`}
-                  >
-                    <span>{item.label}</span>
-                    {isActive && <div className="w-1.5 h-1.5 rounded-full bg-primary" />}
-                  </button>
-                );
-              })}
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              onClick={() => setIsOpen(false)}
+              className="fixed inset-0 bg-slate-900/30 dark:bg-slate-900/60 backdrop-blur-md z-[100] lg:hidden"
+              aria-hidden="true"
+            />
+            
+            {/* Sidebar Drawer */}
+            <motion.div
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="fixed top-0 right-0 bottom-0 h-[100dvh] w-[280px] max-w-[85vw] bg-white dark:bg-slate-950 shadow-2xl z-[101] lg:hidden flex flex-col border-l border-slate-200/50 dark:border-slate-800/50"
+            >
+              {/* Header */}
+              <div className="flex items-center justify-between p-6 border-b border-slate-100 dark:border-slate-800/60">
+                <span className="font-display font-bold text-lg text-slate-900 dark:text-white">
+                  Menu
+                </span>
+                <button
+                  onClick={() => setIsOpen(false)}
+                  className="p-2.5 -mr-2.5 rounded-full text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors active:scale-95 touch-manipulation cursor-pointer"
+                  aria-label="Tutup menu"
+                >
+                  <X size={20} />
+                </button>
+              </div>
 
-              <button
-                onClick={() => scrollToSection('contact')}
-                className="mt-2 w-full py-3 rounded-xl text-center text-sm font-semibold bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-primary transition-all shadow-sm"
-              >
-                Hubungi Saya
-              </button>
-            </div>
-          </motion.div>
+              {/* Navigation Items */}
+              <div className="flex-1 overflow-y-auto py-6 px-4 flex flex-col gap-2">
+                {navItems.map((item) => {
+                  const isActive = activeSection === item.id;
+                  return (
+                    <button
+                      key={item.id}
+                      onClick={() => scrollToSection(item.id)}
+                      className={`relative flex items-center justify-between px-4 py-3.5 min-h-[44px] rounded-xl text-base font-medium transition-all duration-200 cursor-pointer touch-manipulation active:scale-[0.98] ${
+                        isActive
+                          ? 'bg-primary/10 text-primary dark:text-accent font-semibold'
+                          : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-900/50 hover:text-slate-900 dark:hover:text-white'
+                      }`}
+                    >
+                      <span>{item.label}</span>
+                      {isActive && (
+                        <motion.div
+                          layoutId="activeMobileIndicator"
+                          className="w-1.5 h-1.5 rounded-full bg-primary dark:bg-accent"
+                          transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                        />
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Footer */}
+              <div className="p-6 border-t border-slate-100 dark:border-slate-800/60">
+                <button
+                  onClick={() => scrollToSection('contact')}
+                  className="w-full flex justify-center items-center py-3.5 min-h-[44px] rounded-xl text-sm font-semibold bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-primary dark:hover:bg-accent transition-all shadow-sm active:scale-[0.98] cursor-pointer touch-manipulation"
+                >
+                  Hubungi Saya
+                </button>
+              </div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </nav>

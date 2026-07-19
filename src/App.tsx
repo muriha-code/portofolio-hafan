@@ -105,11 +105,6 @@ export default function App() {
         setSkills(sks);
         setExperiences(exps);
         setCertificates(certs);
-
-        // Apply dynamically loaded browser tab title
-        if (s?.websiteTitle) {
-          document.title = s.websiteTitle;
-        }
       } catch (err) {
         console.error("Gagal sinkronisasi data:", err);
       } finally {

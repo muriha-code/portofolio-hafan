@@ -12,6 +12,10 @@ export const Preloader: React.FC<PreloaderProps> = ({ isDataLoaded, onFinished }
   const [isFadingOut, setIsFadingOut] = useState(false);
 
   useEffect(() => {
+    document.title = "Web Portofolio";
+  }, []);
+
+  useEffect(() => {
     const statuses = [
       "Initializing Portfolio...",
       "Loading Projects...",
