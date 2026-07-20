@@ -20,6 +20,7 @@ import { ExperienceTimeline } from './components/ExperienceTimeline';
 import { Certificates } from './components/Certificates';
 import { ContactForm } from './components/ContactForm';
 import { Footer } from './components/Footer';
+import { Chatbot } from './components/Chatbot';
 
 // Admin Components
 import { AdminPanel } from './components/AdminPanel';
@@ -200,6 +201,7 @@ export default function App() {
         
         {settings && <ContactForm settings={settings} />}
         
+        <Chatbot />
         <Footer />
       </div>
     );

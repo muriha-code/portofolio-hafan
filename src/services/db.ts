@@ -22,7 +22,7 @@ import {
   where
 } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { Profile, Project, Skill, Experience, Certificate, Message, Settings } from '../types';
+import { Profile, Project, Skill, Experience, Certificate, Message, Settings, ChatbotSettings } from '../types';
 
 // Detect if real Firebase config is available in env
 const firebaseConfig = {
@@ -68,7 +68,7 @@ if (isFirebaseConfigured) {
 const defaultProfile: Profile = {
   name: "Muhamad Rifky Hafan",
   title: "Information Science Student",
-  subtitle: "Web Developer",
+  subtitle: "Web Developer & Graphic Designer",
   description: "Saya adalah mahasiswa Sains Informasi yang memiliki ketertarikan besar dalam pengembangan website modern dan UI/UX Design. Saya senang membangun website yang cepat, responsif, memiliki pengalaman pengguna yang baik, serta fungsional.",
   avatarUrl: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=600", // Placeholder elegant avatar
   bio: "Halo! Saya Muhamad Rifky Hafan, seorang mahasiswa Sains Informasi dengan hasrat mendalam pada integrasi antara teknologi dan desain UI/UX. Fokus saya adalah menciptakan solusi digital yang fungsional tanpa mengorbankan estetika visual. Melalui keahlian dalam Frontend/Full-Stack Development, saya membantu brand dan startup menerjemahkan ide mereka menjadi produk digital yang premium.",
@@ -89,6 +89,42 @@ const defaultSettings: Settings = {
   whatsappNumber: "+6281234567890",
   metaDescription: "Website portfolio pribadi Muhamad Rifky Hafan - Web Developer",
   heroText: "Developing Premium Web Solutions"
+};
+
+const defaultChatbotSettings: ChatbotSettings = {
+  enabled: true,
+  aiName: "Aster",
+  welcomeMessage: "Halo! Saya **Aster**, AI Assistant dari **Muriha Studio**. Saya siap membantu Anda mengenal lebih jauh tentang profil, proyek, pengalaman, keterampilan, sertifikasi, maupun layanan yang tersedia. Saya juga dapat menjawab berbagai pertanyaan umum seputar teknologi dan pengetahuan lainnya. Silakan tanyakan apa pun.",
+  placeholderText: "Ask Aster anything...",
+  status: "online",
+  systemPrompt: `Kamu adalah Aster, AI Assistant resmi untuk Muriha Studio. Tugasmu membantu pengunjung menemukan informasi mengenai profil, proyek, pengalaman, keterampilan, sertifikasi, layanan, dan informasi lain yang tersedia pada website maupun CMS Muriha Studio. Gunakan data portfolio sebagai sumber utama jika pertanyaan berkaitan dengan Muriha Studio. Jika pertanyaan berada di luar konteks portfolio, jawab menggunakan pengetahuan umum dengan bahasa yang akurat dan mudah dipahami.
+
+Jika pengguna bertanya mengenai namamu, jelaskan bahwa Aster berasal dari bahasa Yunani yang berarti "bintang". Nama tersebut dipilih oleh pemilik Muriha Studio karena melambangkan penunjuk arah. Seperti bintang yang membantu menunjukkan arah, kamu dirancang untuk memandu pengunjung menemukan informasi dengan cepat, jelas, dan mudah dipahami. Jika pengguna memuji nama tersebut, ucapkan terima kasih dengan rendah hati.
+
+Berkomunikasilah dengan gaya yang ramah, profesional, komunikatif, dan informatif. Berikan jawaban singkat untuk pertanyaan sederhana, serta penjelasan yang lebih rinci jika diminta. Jika informasi mengenai Muriha Studio tidak tersedia, katakan dengan jujur bahwa informasi tersebut belum tersedia dan jangan pernah mengarang jawaban.
+
+Jangan pernah mengaku sebagai manusia. Perkenalkan dirimu sebagai AI Assistant untuk Muriha Studio. Jangan mengaku sebagai ChatGPT, Gemini, atau AI lain kecuali pengguna secara khusus menanyakan teknologi yang digunakan. Jika ditanya, jelaskan bahwa kamu adalah Aster yang dibangun menggunakan teknologi AI modern untuk membantu pengunjung Muriha Studio.
+
+Tolak dengan sopan permintaan yang berkaitan dengan pornografi, eksploitasi seksual, terorisme, malware, phishing, hacking ilegal, penipuan, pembuatan senjata, narkotika, ujaran kebencian, maupun aktivitas yang melanggar hukum atau membahayakan. Cukup sampaikan bahwa kamu tidak dapat membantu permintaan tersebut dan arahkan pengguna untuk mengajukan pertanyaan lain yang aman.`,
+  model: "gemini-3.1-flash-lite",
+  maxTokens: 800,
+  temperature: 0.7,
+  faq: [
+    { question: "Siapa Muriha Studio?", answer: "Muriha Studio adalah entitas yang dijalankan oleh Muhamad Rifky Hafan, seorang Web Developer dan UI/UX Designer." },
+    { question: "Apakah tersedia untuk freelance?", answer: "Ya, saat ini saya menerima proyek freelance untuk Web Development dan UI/UX Design." }
+  ],
+  blockedTopics: [
+    "Pornografi atau konten seksual eksplisit",
+    "Eksploitasi seksual",
+    "Kekerasan ekstrem",
+    "Terorisme",
+    "Pembuatan bom atau senjata",
+    "Malware, ransomware, phishing, pencurian akun, cracking, maupun aktivitas ilegal lainnya",
+    "Penyalahgunaan data pribadi",
+    "Ujaran kebencian",
+    "Aktivitas kriminal",
+    "Penipuan"
+  ]
 };
 
 const defaultSkills: Skill[] = [
@@ -360,6 +396,30 @@ export const dbService = {
       await setDoc(docRef, settings, { merge: true });
     } else {
       saveLocal('rifky_settings', settings);
+    }
+  },
+
+  // Chatbot Settings CRUD
+  async getChatbotSettings(): Promise<ChatbotSettings> {
+    if (isFirebaseConfigured && firestore) {
+      const docRef = doc(firestore, "chatbot_settings", "main");
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        return docSnap.data() as ChatbotSettings;
+      } else {
+        return defaultChatbotSettings;
+      }
+    } else {
+      return loadLocal('rifky_chatbot_settings', defaultChatbotSettings);
+    }
+  },
+
+  async updateChatbotSettings(settings: ChatbotSettings): Promise<void> {
+    if (isFirebaseConfigured && firestore) {
+      const docRef = doc(firestore, "chatbot_settings", "main");
+      await setDoc(docRef, settings, { merge: true });
+    } else {
+      saveLocal('rifky_chatbot_settings', settings);
     }
   },
 

@@ -73,3 +73,17 @@ export interface Settings {
   metaDescription: string;
   heroText: string;
 }
+
+export interface ChatbotSettings {
+  enabled: boolean;
+  aiName: string;
+  welcomeMessage: string;
+  placeholderText: string;
+  status: 'online' | 'offline' | 'busy';
+  systemPrompt: string;
+  model: string;
+  maxTokens: number;
+  temperature: number;
+  faq: { question: string; answer: string }[];
+  blockedTopics: string[];
+}

@@ -10,11 +10,31 @@ View your app in AI Studio: https://ai.studio/apps/a3c54198-23f1-431a-8fe0-d14f9
 
 ## Run Locally
 
-**Prerequisites:**  Node.js
+**Prerequisites:**  Node.js (v18+)
 
+### 1. Dapatkan Google Gemini API Key
+Untuk mengaktifkan fitur **Aster AI Assistant**, Anda memerlukan API Key dari Google Gemini.
+1. Kunjungi [Google AI Studio](https://aistudio.google.com/app/apikey).
+2. Login menggunakan akun Google Anda dan buat API Key baru.
+3. Salin API Key yang telah dibuat.
 
+### 2. Konfigurasi Environment Variables
+1. Duplikat file `.env.example` dan ubah namanya menjadi `.env`.
+   (Pastikan `.env` tidak pernah di-commit ke public repository untuk alasan keamanan).
+2. Buka `.env` dan ganti nilai `GEMINI_API_KEY` dengan API Key milik Anda:
+```env
+GEMINI_API_KEY=AIzaSy...
+```
+
+### 3. Install dan Jalankan Project
 1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+   ```bash
+   npm install
+   ```
+2. Jalankan aplikasi (menjalankan Frontend Vite dan Backend Express secara bersamaan):
+   ```bash
+   npm run dev
+   ```
+   > **Note:** Jika `GEMINI_API_KEY` belum diisi, terminal akan menampilkan peringatan: 
+   > `WARNING: Gemini API Key is missing. Chatbot will not function correctly.`
+   > Namun fitur portofolio lainnya akan tetap berjalan normal.

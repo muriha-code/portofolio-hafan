@@ -59,7 +59,7 @@ export const About: React.FC<AboutProps> = ({ profile }) => {
                 </li>
                 <li className="flex justify-between py-1">
                   <span className="font-medium text-slate-500">Karier</span>
-                  <span>Web Developer</span>
+                  <span>{profile.subtitle}</span>
                 </li>
               </ul>
             </div>

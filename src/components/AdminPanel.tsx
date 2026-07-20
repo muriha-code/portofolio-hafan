@@ -3,20 +3,21 @@ import {
   LayoutDashboard, User, FolderHeart, Shield, Briefcase, Award, 
   Palette, MessageSquare, Settings as SettingsIcon, LogOut, Sparkles,
   Plus, Edit2, Trash2, Check, Mail, Lock, PlusCircle, CheckCircle2,
-  Trash, Eye, Loader2, Upload, FileText, Star, Compass, Terminal, ShieldAlert
+  Trash, Eye, Loader2, Upload, FileText, Star, Compass, Terminal, ShieldAlert, Bot
 } from 'lucide-react';
 import { toast, Toaster } from 'react-hot-toast';
 import { dbService } from '../services/db';
 import { Profile, Project, Skill, Experience, Certificate, Message, Settings } from '../types';
 import { LucideIcon } from './LucideIcon';
 import { ImageCropperModal } from './ImageCropperModal';
+import { AdminChatbotSettings } from './AdminChatbotSettings';
 
 interface AdminPanelProps {
   onLogout: () => void;
 }
 
 export const AdminPanel: React.FC<AdminPanelProps> = ({ onLogout }) => {
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'profile' | 'projects' | 'skills' | 'experience' | 'certificates' | 'messages' | 'settings'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'profile' | 'projects' | 'skills' | 'experience' | 'certificates' | 'messages' | 'settings' | 'chatbot'>('dashboard');
   
   // States for database entities
   const [profile, setProfile] = useState<Profile | null>(null);
@@ -316,7 +317,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onLogout }) => {
 
   // Sidebar Menu Items
   interface MenuItem {
-    id: 'dashboard' | 'profile' | 'projects' | 'skills' | 'experience' | 'certificates' | 'messages' | 'settings';
+    id: 'dashboard' | 'profile' | 'projects' | 'skills' | 'experience' | 'certificates' | 'messages' | 'settings' | 'chatbot';
     label: string;
     icon: any;
     badge?: number;
@@ -332,6 +333,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onLogout }) => {
 
     { id: 'messages', label: 'Messages', icon: MessageSquare, badge: messages.filter(m => !m.read).length },
     { id: 'settings', label: 'Settings', icon: SettingsIcon },
+    { id: 'chatbot', label: 'Chatbot AI', icon: Bot },
   ];
 
   if (loading) {
@@ -962,6 +964,13 @@ VITE_FIREBASE_MESSAGING_SENDER_ID="12345678"
 VITE_FIREBASE_APP_ID="1:1234:web:abcd"`}
               </pre>
             </div>
+          </div>
+        )}
+
+        {/* TAB 10: CHATBOT SETTINGS */}
+        {activeTab === 'chatbot' && (
+          <div className="animate-fadeIn">
+            <AdminChatbotSettings />
           </div>
         )}
 
