@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { MessageCircle, X, Send, Bot, User, Loader2, RotateCcw } from 'lucide-react';
+import { MessageCircle, X, Send, Bot, User, Loader2, RotateCcw, Sparkles } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
@@ -208,18 +208,33 @@ export const Chatbot = () => {
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0, opacity: 0 }}
+            transition={{ type: 'spring', stiffness: 260, damping: 20 }}
+            whileHover={{ scale: 1.08 }}
+            whileTap={{ scale: 0.95 }}
             type="button"
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
               setIsOpen(true);
             }}
-            className="fixed bottom-6 right-6 z-50 p-4 bg-primary hover:bg-primary/90 text-white rounded-full shadow-2xl cursor-pointer hover:scale-105 transition-all group"
+            className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50 flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-gradient-to-tr from-blue-600 via-blue-500 to-blue-400 text-white rounded-full shadow-[0_4px_20px_rgba(37,99,235,0.4)] dark:shadow-[0_4px_25px_rgba(59,130,246,0.5)] cursor-pointer group border border-white/20 dark:border-white/10"
             aria-label="Buka Chat AI"
           >
-            <MessageCircle size={28} className="group-hover:animate-pulse" />
+            {/* Idle Breathing Glow */}
+            <motion.div 
+              animate={{ opacity: [0.4, 0.7, 0.4], scale: [1, 1.15, 1] }} 
+              transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }}
+              className="absolute inset-0 rounded-full bg-blue-500/50 blur-md pointer-events-none"
+            ></motion.div>
+            
+            {/* Icons container */}
+            <div className="relative z-10 flex items-center justify-center">
+              <MessageCircle strokeWidth={1.5} className="w-6 h-6 md:w-7 md:h-7 text-white drop-shadow-md transition-transform duration-300 group-hover:scale-110" />
+            </div>
+
+            {/* Online Indicator */}
             {isOnline && (
-              <span className="absolute top-0 right-0 w-3.5 h-3.5 bg-green-500 border-2 border-white dark:border-slate-900 rounded-full"></span>
+              <span className="absolute bottom-0 right-0 md:bottom-0.5 md:right-0.5 w-3.5 h-3.5 bg-green-500 border-[1.5px] border-white dark:border-slate-800 rounded-full z-20 shadow-sm"></span>
             )}
           </motion.button>
         )}
