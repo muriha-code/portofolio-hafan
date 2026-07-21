@@ -150,7 +150,8 @@ export const Chatbot = () => {
       const currentMessages = [...messages, userMessage];
 
       // Call API
-      const res = await fetch('http://localhost:3001/api/chat', {
+      const apiUrl = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:3001/api/chat' : '/api/chat');
+      const res = await fetch(apiUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
