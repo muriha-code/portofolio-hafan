@@ -134,7 +134,18 @@ export const Chatbot = () => {
         dbService.getSettings()
       ]);
 
-      const contextData = { profile, skills, projects, experiences, certificates, settings: siteSettings };
+      const currentTime = new Date().toLocaleString('id-ID', { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric', 
+        hour: '2-digit', 
+        minute: '2-digit',
+        second: '2-digit',
+        timeZoneName: 'short'
+      });
+
+      const contextData = { profile, skills, projects, experiences, certificates, settings: siteSettings, currentTime };
 
       const currentMessages = [...messages, userMessage];
 
@@ -217,20 +228,20 @@ export const Chatbot = () => {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: 50, scale: 0.9 }}
+            initial={{ opacity: 0, y: 20, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 50, scale: 0.9 }}
-            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="fixed bottom-6 right-6 z-50 w-full max-w-[380px] h-[600px] max-h-[85vh] bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 flex flex-col overflow-hidden"
+            exit={{ opacity: 0, y: 20, scale: 0.96 }}
+            transition={{ duration: 0.25, ease: 'easeOut' }}
+            className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50 w-[calc(100vw-32px)] md:w-full max-w-[380px] h-[50vh] max-h-[60vh] md:h-[600px] md:max-h-[85vh] bg-white dark:bg-slate-900 rounded-2xl md:rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 flex flex-col overflow-hidden"
           >
             {/* Header */}
-            <div className="bg-primary p-4 text-white flex items-center justify-between shadow-md relative z-10">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-md border border-white/30">
-                  <Bot size={20} />
+            <div className="bg-primary p-3 md:p-4 text-white flex items-center justify-between shadow-md relative z-10">
+              <div className="flex items-center gap-2 md:gap-3">
+                <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-md border border-white/30">
+                  <Bot className="w-4 h-4 md:w-5 md:h-5" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-sm leading-tight">{settings.aiName}</h3>
+                  <h3 className="font-bold text-[13px] md:text-sm leading-tight">{settings.aiName}</h3>
                   <div className="flex items-center gap-1.5 mt-0.5">
                     <span className={`w-2 h-2 rounded-full ${isOnline ? 'bg-green-400' : 'bg-amber-400'} animate-pulse`}></span>
                     <span className="text-[10px] text-white/80 font-medium">
@@ -273,11 +284,11 @@ export const Chatbot = () => {
                 <motion.div 
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="flex flex-col gap-1.5 max-w-[85%]"
+                  className="flex flex-col gap-1.5 max-w-[80%] md:max-w-[85%]"
                 >
-                  <div className="bg-white dark:bg-slate-800 p-3.5 rounded-2xl rounded-tl-sm shadow-sm border border-slate-100 dark:border-slate-700/50 text-sm text-slate-700 dark:text-slate-300">
+                  <div className="bg-white dark:bg-slate-800 p-3 md:p-3.5 rounded-2xl rounded-tl-sm shadow-sm border border-slate-100 dark:border-slate-700/50 text-[13px] md:text-sm text-slate-700 dark:text-slate-300">
                     <MarkdownErrorBoundary>
-                      <div className="prose prose-sm dark:prose-invert prose-p:leading-relaxed prose-a:text-primary max-w-none">
+                      <div className="prose prose-sm dark:prose-invert prose-p:leading-relaxed prose-a:text-primary max-w-none text-[13px] md:text-sm">
                         <ReactMarkdown 
                           remarkPlugins={[remarkGfm]}
                         >
@@ -299,9 +310,9 @@ export const Chatbot = () => {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.05 }}
-                    className={`flex flex-col gap-1.5 ${isUser ? 'items-end' : 'items-start'} max-w-[90%] ${isUser ? 'ml-auto' : ''}`}
+                    className={`flex flex-col gap-1.5 ${isUser ? 'items-end max-w-[75%] md:max-w-[85%] ml-auto' : 'items-start max-w-[80%] md:max-w-[85%]'}`}
                   >
-                    <div className={`p-3.5 rounded-2xl shadow-sm text-sm ${
+                    <div className={`p-3 md:p-3.5 rounded-2xl shadow-sm text-[13px] md:text-sm ${
                       isUser 
                         ? 'bg-primary text-white rounded-tr-sm' 
                         : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-tl-sm border border-slate-100 dark:border-slate-700/50'
@@ -310,7 +321,7 @@ export const Chatbot = () => {
                         <p className="whitespace-pre-wrap">{msg.content}</p>
                       ) : (
                         <MarkdownErrorBoundary>
-                          <div className="prose prose-sm dark:prose-invert prose-p:leading-relaxed prose-pre:bg-slate-900 prose-pre:p-0 prose-pre:border prose-pre:border-slate-800 overflow-hidden break-words max-w-none">
+                          <div className="prose prose-sm dark:prose-invert prose-p:leading-relaxed prose-pre:bg-slate-900 prose-pre:p-0 prose-pre:border prose-pre:border-slate-800 overflow-hidden break-words max-w-none text-[13px] md:text-sm">
                             <ReactMarkdown 
                               remarkPlugins={[remarkGfm]}
                               components={{
@@ -340,7 +351,7 @@ export const Chatbot = () => {
                         </MarkdownErrorBoundary>
                       )}
                     </div>
-                    <span className="text-[9px] text-slate-400 font-medium px-1">
+                    <span className="text-[10px] text-slate-400 font-medium px-1">
                       {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </span>
                   </motion.div>
@@ -352,9 +363,9 @@ export const Chatbot = () => {
                 <motion.div 
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="flex flex-col gap-1.5 max-w-[85%]"
+                  className="flex flex-col gap-1.5 max-w-[80%] md:max-w-[85%]"
                 >
-                  <div className="bg-white dark:bg-slate-800 p-4 rounded-2xl rounded-tl-sm shadow-sm border border-slate-100 dark:border-slate-700/50 w-fit">
+                  <div className="bg-white dark:bg-slate-800 p-3 md:p-3.5 rounded-2xl rounded-tl-sm shadow-sm border border-slate-100 dark:border-slate-700/50 w-fit">
                     <div className="flex gap-1.5 items-center">
                       <div className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
                       <div className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
@@ -368,15 +379,15 @@ export const Chatbot = () => {
             </div>
 
             {/* Input Area */}
-            <div className="p-3 bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800">
-              <div className="relative flex items-end gap-2 bg-slate-50 dark:bg-slate-950 p-2 rounded-2xl border border-slate-200 dark:border-slate-800 focus-within:border-primary/50 focus-within:ring-2 focus-within:ring-primary/20 transition-all">
+            <div className="p-2 md:p-3 bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800">
+              <div className="relative flex items-end gap-1 md:gap-2 bg-slate-50 dark:bg-slate-950 p-1 md:p-2 rounded-2xl border border-slate-200 dark:border-slate-800 focus-within:border-primary/50 focus-within:ring-2 focus-within:ring-primary/20 transition-all">
                 <textarea
                   ref={textareaRef}
                   value={input}
                   onChange={handleInput}
                   onKeyDown={handleKeyDown}
                   placeholder={settings.placeholderText}
-                  className="w-full max-h-[120px] bg-transparent text-sm text-slate-800 dark:text-slate-200 px-3 py-2.5 resize-none focus:outline-none custom-scrollbar"
+                  className="w-full max-h-[120px] bg-transparent text-[13px] md:text-sm text-slate-800 dark:text-slate-200 px-2 md:px-3 py-2 md:py-2.5 resize-none focus:outline-none custom-scrollbar"
                   rows={1}
                 />
                 <button
@@ -387,9 +398,9 @@ export const Chatbot = () => {
                     sendMessage();
                   }}
                   disabled={!input.trim() || isTyping}
-                  className="p-2.5 bg-primary text-white rounded-xl hover:bg-primary/90 disabled:opacity-50 disabled:hover:bg-primary transition-colors flex-shrink-0 mb-0.5 mr-0.5 cursor-pointer shadow-sm shadow-primary/20"
+                  className="p-2 md:p-2.5 bg-primary text-white rounded-xl hover:bg-primary/90 disabled:opacity-50 disabled:hover:bg-primary transition-colors flex-shrink-0 mb-0.5 mr-0.5 cursor-pointer shadow-sm shadow-primary/20"
                 >
-                  {isTyping ? <Loader2 size={18} className="animate-spin" /> : <Send size={18} className="ml-0.5" />}
+                  {isTyping ? <Loader2 className="w-4 h-4 md:w-5 md:h-5 animate-spin" /> : <Send className="w-4 h-4 md:w-5 md:h-5 ml-0.5" />}
                 </button>
               </div>
               <div className="text-center mt-2">

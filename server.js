@@ -55,6 +55,9 @@ app.post('/api/chat', async (req, res) => {
     systemInstruction += "\n\n=== KONTEKS DATA PORTFOLIO ===";
     systemInstruction += "\nGunakan data berikut untuk menjawab pertanyaan yang berkaitan dengan portfolio. Jangan pernah berasumsi jika data tidak ada di sini.\n";
     if (contextData) {
+      if (contextData.currentTime) {
+        systemInstruction += `\nWaktu Sistem Saat Ini: ${contextData.currentTime}`;
+      }
       if (contextData.profile) systemInstruction += `\nProfil: ${JSON.stringify(contextData.profile)}`;
       if (contextData.skills) systemInstruction += `\nSkills: ${JSON.stringify(contextData.skills)}`;
       if (contextData.projects) systemInstruction += `\nProyek: ${JSON.stringify(contextData.projects)}`;
