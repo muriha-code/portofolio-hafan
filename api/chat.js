@@ -12,11 +12,26 @@ let ai = null;
 
 const getAI = () => {
   if (!ai) {
-    const apiKey = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
-    if (apiKey) {
-      ai = new GoogleGenAI({ apiKey });
+    // Gunakan destructuring atau assignment tidak langsung untuk mencegah esbuild
+    // me-replace process.env.NAMAKEY dengan nilai undefined saat build-time.
+    const env = process.env;
+    const apiKey = env.GEMINI_API_KEY || env.VITE_GEMINI_API_KEY || env.GOOGLE_API_KEY;
+    
+    // Safe diagnostic logging (tidak mengekspos isi key)
+    console.log("[Diagnostic] Memeriksa Environment Variables untuk Gemini:");
+    console.log("- GEMINI_API_KEY tersedia:", !!env.GEMINI_API_KEY);
+    console.log("- VITE_GEMINI_API_KEY tersedia:", !!env.VITE_GEMINI_API_KEY);
+    console.log("- GOOGLE_API_KEY tersedia:", !!env.GOOGLE_API_KEY);
+
+    if (apiKey && apiKey.trim() !== '') {
+      try {
+        ai = new GoogleGenAI({ apiKey: apiKey.trim() });
+        console.log("[Diagnostic] GoogleGenAI berhasil diinisialisasi.");
+      } catch (err) {
+        console.error("[Diagnostic] Gagal menginisialisasi GoogleGenAI:", err);
+      }
     } else {
-      console.warn("WARNING: Gemini API Key is missing. Chatbot will not function correctly.");
+      console.warn("[WARNING] API Key Gemini tidak ditemukan di environment variables (Server-side). Chatbot tidak akan berfungsi.");
     }
   }
   return ai;
