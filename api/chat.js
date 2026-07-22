@@ -8,16 +8,19 @@ dotenv.config();
 
 const app = express();
 
-// Initialize Google Gen AI
-// Try to get API key from GEMINI_API_KEY or VITE_GEMINI_API_KEY
-const apiKey = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
+let ai = null;
 
-let ai;
-if (apiKey) {
-  ai = new GoogleGenAI({ apiKey });
-} else {
-  console.warn("WARNING: Gemini API Key is missing. Chatbot will not function correctly.");
-}
+const getAI = () => {
+  if (!ai) {
+    const apiKey = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY;
+    if (apiKey) {
+      ai = new GoogleGenAI({ apiKey });
+    } else {
+      console.warn("WARNING: Gemini API Key is missing. Chatbot will not function correctly.");
+    }
+  }
+  return ai;
+};
 
 // Middleware
 app.use(cors());
@@ -36,7 +39,8 @@ app.use('/api/chat', limiter);
 
 app.post('/api/chat', async (req, res) => {
   try {
-    if (!ai) {
+    const aiInstance = getAI();
+    if (!aiInstance) {
       return res.status(500).json({ error: "API Key Gemini belum dikonfigurasi di server." });
     }
 
@@ -106,7 +110,7 @@ app.post('/api/chat', async (req, res) => {
       requestedModel = 'gemini-3.1-flash-lite';
     }
 
-    const response = await ai.models.generateContent({
+    const response = await aiInstance.models.generateContent({
       model: requestedModel,
       contents: [...formattedMessages, currentMessage],
       config: {
